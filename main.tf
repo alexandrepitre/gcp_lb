@@ -11,7 +11,7 @@ module "load_balancer" {
   name = "my-http-load-balancer"
   region  = "northamerica-northeast1-a"
   zone = "northamerica-northeast1"
-  target_tags    = ["web-server"]
+  enable_http = true
   backend_service_port = 80
 
   http_health_check {
