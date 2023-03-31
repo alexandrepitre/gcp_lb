@@ -69,7 +69,7 @@
 */
 
 module "http_load_balancer" {
-  source  = "terraform-google-modules/lb-http/google"
+  source  = "GoogleCloudPlatform/lb-http/google"
   name               = "global-http-lb"
   project_id = "avian-amulet-378416"
   region  = "northamerica-northeast1-a"
