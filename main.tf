@@ -1,25 +1,23 @@
 # Module definition
 module "load_balancer" {
-  source = "https://github.com/gruntwork-io/terraform-google-load-balancer"
-  project_id = "avian-amulet-378416"
-  name       = "alex-balancer"
-  region     = "northamerica-northeast1-a"
+  source = "git::https://github.com/gruntwork-io/terraform-google-load-balancer.git?ref=master"
 
-  enable_http = true #Enable plain http 
+  name           = "my-http-load-balancer"
+  target_tags    = ["web-server"]
   backend_service_port = 80
 
- # ssl_certificate = {
- #   certificate = "${file("path/to/certificate.pem")}"
- #   private_key = "${file("path/to/private_key.pem")}"
- # }
-
-  target_proxy_url_map = {
-    default_service = "http://my-backend-service.default.svc.cluster.local:80"
-    map             = null
+  http_health_check {
+    request_path = "/"
+    port         = 80
   }
 
-  global_forwarding_rule = {
-    ip_address = null
-    port_range = "80"
+  backend_service {
+    name = "my-backend-service"
+
+    backend {
+      group = "my-instance-group"
+    }
+
+    timeout_sec = 10
   }
 }
