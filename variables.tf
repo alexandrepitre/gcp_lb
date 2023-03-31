@@ -21,7 +21,7 @@ variable "https_redirect" {
   default     = false
 }
 
-variable "backends" {
+/* variable "backends" {
   description = "Map backend indices to list of backend maps."
   type = map(object({
     port                    = number
@@ -75,4 +75,4 @@ variable "backends" {
       oauth2_client_secret = string
     })
   }))
-}
+} */

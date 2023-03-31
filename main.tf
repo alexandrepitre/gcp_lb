@@ -1,5 +1,6 @@
 # Module definition
-module "gce-lb-http" {
+/* 
+  module "gce-lb-http" {
   source = "GoogleCloudPlatform/lb-http/google"
   version = "~> 4.4"
 
@@ -65,3 +66,49 @@ module "gce-lb-http" {
     }
   }
 } 
+*/
+
+module "http_load_balancer" {
+  source  = "terraform-google-modules/lb-http/google"
+  name               = "global-http-lb"
+  project_id = "avian-amulet-378416"
+  region  = "northamerica-northeast1-a"
+  backend_service    = "serverless-backend-service"
+  ip_address         = "global-appserver-ip"
+  http_health_check  = true
+  https_redirect     = true
+  ssl_policy         = "MODERN"
+  security_policy    = "basic"
+  target_proxy       = "global-http-proxy"
+  url_map            = "global-http-url-map"
+}
+
+resource "google_compute_backend_service" "serverless_backend_service" {
+  name                 = "serverless-backend-service"
+  project = "avian-amulet-378416"
+  load_balancing_scheme = "INTERNAL_SELF_MANAGED"
+  protocol             = "HTTP"
+  backends {
+    description = "Serverless Backend"
+  }
+}
+
+resource "google_compute_global_forwarding_rule" "http_forwarding_rule" {
+  name       = "global-http-forwarding-rule"
+  ip_address = "global-appserver-ip"
+  port_range = "80"
+  target    = "${google_compute_target_http_proxy.global_http_proxy.self_link}"
+  project = "avian-amulet-378416"
+}
+
+resource "google_compute_target_http_proxy" "global_http_proxy" {
+  name    = "global-http-proxy"
+  project = "avian-amulet-378416"
+  url_map = "${google_compute_url_map.global_http_url_map.self_link}"
+}
+
+resource "google_compute_url_map" "global_http_url_map" {
+  name            = "global-http-url-map"
+  default_service = "${google_compute_backend_service.serverless_backend_service.self_link}"
+  project = "avian-amulet-378416"
+}
