@@ -1,6 +1,6 @@
 # Module definition
 module "load_balancer" {
-  source = "terraform-google-modules/http-load-balancer/google"
+  source = "GoogleCloudPlatform/lb-http/google"
   project_id = "avian-amulet-378416"
   name       = "alex-balancer"
   region     = "northamerica-northeast1-a"
