@@ -2,8 +2,7 @@
 
 provider "google" {
   project = "avian-amulet-378416"
-  region  = "northamerica-northeast1-a"
-  zone = "northamerica-northeast1"
+  region  = "northamerica-northeast1-a"=
 }
 
 module "load_balancer" {
@@ -11,6 +10,7 @@ module "load_balancer" {
   project = "avian-amulet-378416"
   name = "my-http-load-balancer"
   region  = "northamerica-northeast1-a"
+  zone = "northamerica-northeast1"
   target_tags    = ["web-server"]
   backend_service_port = 80
 
