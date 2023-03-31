@@ -7,14 +7,13 @@ provider "google" {
 }
 
 module "http-load-balancer" {
-  source  = "git::https://github.com/GoogleCloudPlatform/terraform-google-lb-http.git?ref=master"
-  version = "v1.4.0"
-  name               = "http-load-balancer"
-  region  = "northamerica-northeast1"
+  source = "git::https://github.com/GoogleCloudPlatform/terraform-google-lb-http.git?ref=master"
+  name = "http-load-balancer"
+  region = "northamerica-northeast1"
   zone = "northamerica-northeast1-a"
-  network            = "alex_net"
-  subnetwork         = "alex_subnet"
-  target_pool_ports  = ["80"]
+  network = "alex_net"
+  subnetwork = "alex_subnet"
+  target_pool_ports = ["80"]
   target_pool_health_check = "tcp-health-check"
   forwarding_rule_name = "http-forwarding-rule"
 }
