@@ -12,7 +12,6 @@ module "load_balancer" {
   region  = "northamerica-northeast1-a"
   zone = "northamerica-northeast1"
   enable_http = true
-  backend_service_port = 80
 
   http_health_check {
     request_path = "/"
