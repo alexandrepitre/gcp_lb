@@ -68,7 +68,7 @@
 } 
 */
 
-module "http_load_balancer" {
+module "gce-lb-http" {
   source  = "GoogleCloudPlatform/lb-http/google"
   name               = "global-http-lb"
   project_id = "avian-amulet-378416"
