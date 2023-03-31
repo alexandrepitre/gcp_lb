@@ -8,7 +8,8 @@ provider "google" {
 module "load_balancer" {
   source = "git::https://github.com/gruntwork-io/terraform-google-load-balancer.git?ref=master"
 
-  name           = "my-http-load-balancer"
+  name = "my-http-load-balancer"
+  region  = "northamerica-northeast1-a"
   target_tags    = ["web-server"]
   backend_service_port = 80
 
