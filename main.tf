@@ -69,7 +69,7 @@
 */
 
 module "gce-lb-http" {
-  source  = "GoogleCloudPlatform/lb-http/google"
+  source  = "github.com/terraform-google-modules/terraform-google-lb-http"
   name               = "global-http-lb"
   project_id = "avian-amulet-378416"
   region  = "northamerica-northeast1-a"
