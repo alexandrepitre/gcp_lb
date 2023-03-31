@@ -1,62 +1,25 @@
 # Module definition
-module "gce-lb-http" {
-  source = "GoogleCloudPlatform/lb-http/google"
-  project = "avian-amulet-378416"
+module "load_balancer" {
+  source = "https://github.com/gruntwork-io/terraform-google-load-balancer"
+  project_id = "avian-amulet-378416"
   name       = "alex-balancer"
- backends = {
-    default = {
-      description                     = null
-      port                            = 80
-      protocol                        = "HTTP"
-      port_name                       = HTTP
-      timeout_sec                     = 10
-      enable_cdn                      = false
-      custom_request_headers          = null
-      custom_response_headers         = null
-      security_policy                 = null
+  region     = "northamerica-northeast1-a"
 
-      connection_draining_timeout_sec = null
-      session_affinity                = null
-      affinity_cookie_ttl_sec         = null
+  enable_http = true #Enable plain http 
+  backend_service_port = 80
 
-      health_check = {
-        check_interval_sec  = null
-        timeout_sec         = null
-        healthy_threshold   = null
-        unhealthy_threshold = null
-        request_path        = "/"
-        port                = 80
-        host                = null
-        logging             = null
-      }
+ # ssl_certificate = {
+ #   certificate = "${file("path/to/certificate.pem")}"
+ #   private_key = "${file("path/to/private_key.pem")}"
+ # }
 
-      log_config = {
-        enable = true
-        sample_rate = 1.0
-      }
+  target_proxy_url_map = {
+    default_service = "http://my-backend-service.default.svc.cluster.local:80"
+    map             = null
+  }
 
-      groups = [
-        {
-          # Each node pool instance group should be added to the backend.
-          group                        = backend
-          balancing_mode               = null
-          capacity_scaler              = null
-          description                  = null
-          max_connections              = null
-          max_connections_per_instance = null
-          max_connections_per_endpoint = null
-          max_rate                     = null
-          max_rate_per_instance        = null
-          max_rate_per_endpoint        = null
-          max_utilization              = null
-        },
-      ]
-
-      iap_config = {
-        enable               = false
-        oauth2_client_id     = null
-        oauth2_client_secret = null
-      }
-    }
+  global_forwarding_rule = {
+    ip_address = null
+    port_range = "80"
   }
 }
