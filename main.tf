@@ -3,9 +3,6 @@ module "gce-lb-http" {
   source = "GoogleCloudPlatform/lb-http/google"
   project = "avian-amulet-378416"
   name       = "alex-balancer"
-  region     = "northamerica-northeast1-a"
-
-  enable_http = true #Enable plain http 
  backends = {
     default = {
       description                     = null
