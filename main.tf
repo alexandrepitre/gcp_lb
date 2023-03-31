@@ -7,7 +7,7 @@ provider "google" {
 }
 
 module "http-load-balancer" {
-  source  = "terraform-google-modules/http-load-balancer/google"
+  source  = "git::https://github.com/GoogleCloudPlatform/terraform-google-lb-http.git?ref=master"
   version = "v1.4.0"
   name               = "http-load-balancer"
   region  = "northamerica-northeast1"
