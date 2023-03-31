@@ -3,6 +3,7 @@
 provider "google" {
   project = "avian-amulet-378416"
   region  = "northamerica-northeast1-a"
+  zone = "northamerica-northeast1"
 }
 
 module "load_balancer" {
