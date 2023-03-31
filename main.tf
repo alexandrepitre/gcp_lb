@@ -6,9 +6,9 @@ module "gce-lb-http" {
  backends = {
     default = {
       description                     = null
-      port                            = var.service_port
+      port                            = 80
       protocol                        = "HTTP"
-      port_name                       = var.service_port_name
+      port_name                       = HTTP
       timeout_sec                     = 10
       enable_cdn                      = false
       custom_request_headers          = null
@@ -25,7 +25,7 @@ module "gce-lb-http" {
         healthy_threshold   = null
         unhealthy_threshold = null
         request_path        = "/"
-        port                = var.service_port
+        port                = 80
         host                = null
         logging             = null
       }
@@ -38,7 +38,7 @@ module "gce-lb-http" {
       groups = [
         {
           # Each node pool instance group should be added to the backend.
-          group                        = var.backend
+          group                        = backend
           balancing_mode               = null
           capacity_scaler              = null
           description                  = null
