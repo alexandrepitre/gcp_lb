@@ -1,7 +1,7 @@
 # Module definition
 module "gce-lb-http" {
   source = "GoogleCloudPlatform/lb-http/google"
-  project_id = "avian-amulet-378416"
+  project = "avian-amulet-378416"
   name       = "alex-balancer"
   region     = "northamerica-northeast1-a"
 
