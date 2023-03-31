@@ -1,5 +1,4 @@
 # Module definition
-/* 
   module "gce-lb-http" {
   source = "GoogleCloudPlatform/lb-http/google"
   version = "~> 4.4"
@@ -11,9 +10,9 @@
   backends = {
     default = {
       description                     = null
-      port                            = var.service_port
+      port                            = 80
       protocol                        = "HTTP"
-      port_name                       = var.service_port_name
+      port_name                       = "HTTP"
       timeout_sec                     = 10
       enable_cdn                      = false
       custom_request_headers          = null
@@ -31,7 +30,7 @@
         healthy_threshold   = null
         unhealthy_threshold = null
         request_path        = "/"
-        port                = var.service_port
+        port                = 80
         host                = null
         logging             = null
       }
@@ -66,8 +65,9 @@
     }
   }
 } 
-*/
 
+
+/*
 module "gce-lb-http" {
   source  = "GoogleCloudPlatform/lb-http/google"
   name               = "global-http-lb"
@@ -112,3 +112,4 @@ resource "google_compute_url_map" "global_http_url_map" {
   default_service = "${google_compute_backend_service.serverless_backend_service.self_link}"
   project = "avian-amulet-378416"
 }
+*/
