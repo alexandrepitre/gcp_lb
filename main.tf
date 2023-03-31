@@ -1,4 +1,10 @@
 # Module definition
+
+provider "google" {
+  project = "avian-amulet-378416"
+  region  = "northamerica-northeast1-a"
+}
+
 module "load_balancer" {
   source = "git::https://github.com/gruntwork-io/terraform-google-load-balancer.git?ref=master"
 
