@@ -7,7 +7,7 @@ provider "google" {
 }
 
 module "gce-lb-http" {
-  source = "git::https://github.com/GoogleCloudPlatform/terraform-google-lb-http.git?ref=tags/v7.0.0"
+  source = "git::https://github.com/terraform-google-modules/terraform-google-lb-http?ref=tags/v7.0.0"
   version = "~> 4.4"
 
   project = "avian-amulet-378416"
