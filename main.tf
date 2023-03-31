@@ -1,5 +1,5 @@
 # Module definition
-module "load_balancer" {
+module "gce-lb-http" {
   source = "GoogleCloudPlatform/lb-http/google"
   project_id = "avian-amulet-378416"
   name       = "alex-balancer"
