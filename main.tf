@@ -5,8 +5,7 @@
 
   project = "avian-amulet-378416"
   name = "http-load-balancer"
-
-  target_tags       = [module.mig1.target_tags, module.mig2.target_tags]
+  #target_tags       = [module.mig1.target_tags, module.mig2.target_tags]
   backends = {
     default = {
       description                     = null
