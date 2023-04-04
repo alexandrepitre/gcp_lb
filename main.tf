@@ -67,7 +67,7 @@ resource "google_compute_backend_service" "default" {
   name = "serverless-backend-service" 
   project = "avian-amulet-378416"
   protocol = "HTTP"
-  backends {
+  backend {
     description = "Serverless Backend"
     group = google_compute_region_network_endpoint_group.default.id
   }
