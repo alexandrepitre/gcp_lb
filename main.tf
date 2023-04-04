@@ -1,59 +1,34 @@
 # Module definition
-  module "gce-lb-http" {
-  source = "GoogleCloudPlatform/lb-http/google"
+module "lb-http-serverless" {
+  source = "GoogleCloudPlatform/lb-http/google//modules/serverless_negs"
   version = "~> 4.4"
 
   project = "avian-amulet-378416"
   name = "http-load-balancer"
-  #target_tags       = [module.mig1.target_tags, module.mig2.target_tags]
+
+  ssl                             = false
+  https_redirect                  = false
   backends = {
     default = {
       description                     = null
-      port                            = 80
       protocol                        = "HTTP"
       port_name                       = "HTTP"
-      timeout_sec                     = 10
       enable_cdn                      = false
       custom_request_headers          = null
       custom_response_headers         = null
       security_policy                 = null
-      compression_mode                = null
 
-      connection_draining_timeout_sec = null
-      session_affinity                = null
-      affinity_cookie_ttl_sec         = null
-
-      health_check = {
-        check_interval_sec  = null
-        timeout_sec         = null
-        healthy_threshold   = null
-        unhealthy_threshold = null
-        request_path        = "/"
-        port                = 80
-        host                = null
-        logging             = null
-      }
 
       log_config = {
-        enable = true
+        enable = false
         sample_rate = 1.0
       }
 
       groups = [
         {
-          # Each node pool instance group should be added to the backend.
-          group                        = var.backend
-          balancing_mode               = null
-          capacity_scaler              = null
-          description                  = null
-          max_connections              = null
-          max_connections_per_instance = null
-          max_connections_per_endpoint = null
-          max_rate                     = null
-          max_rate_per_instance        = null
-          max_rate_per_endpoint        = null
-          max_utilization              = null
-        },
+          # Your serverless service should have a NEG created that's referenced here.
+          group = google_compute_region_network_endpoint_group.default.id
+        }
       ]
 
       iap_config = {
@@ -63,52 +38,45 @@
       }
     }
   }
-} 
-
-
-/*
-module "gce-lb-http" {
-  source  = "GoogleCloudPlatform/lb-http/google"
-  name               = "global-http-lb"
-  project_id = "avian-amulet-378416"
-  region  = "northamerica-northeast1-a"
-  backend_service    = "serverless-backend-service"
-  ip_address         = "global-appserver-ip"
-  http_health_check  = true
-  https_redirect     = true
-  ssl_policy         = "MODERN"
-  security_policy    = "basic"
-  target_proxy       = "global-http-proxy"
-  url_map            = "global-http-url-map"
 }
 
-resource "google_compute_backend_service" "serverless_backend_service" {
-  name                 = "serverless-backend-service"
-  project = "avian-amulet-378416"
-  load_balancing_scheme = "INTERNAL_SELF_MANAGED"
-  protocol             = "HTTP"
-  backends {
-    description = "Serverless Backend"
+
+#Serverless Network Endpoint Group (NEG)
+resource "google_compute_region_network_endpoint_group" "function_neg" {
+  name                  = "function_neg"
+  network_endpoint_type = "SERVERLESS"
+  region                = "northamerica-northeast1"
+    cloud_function {
+    function = google_cloudfunctions_function.function_neg.name
   }
 }
 
-resource "google_compute_global_forwarding_rule" "http_forwarding_rule" {
-  name       = "global-http-forwarding-rule"
-  ip_address = "global-appserver-ip"
+#Create Cloud Function
+resource "google_cloudfunctions_function" "function_neg" {
+  name        = "function_v1_mtl"
+}
+
+#Reserved IP Address
+resource "google_compute_global_address" "default" {
+  name = "global-appserver-ip"
+}
+
+#Create backend service
+resource "google_compute_backend_service" "default" {
+  provider = google-beta
+  name = "serverless-backend-service" 
+  project = "avian-amulet-378416"
+  protocol = "HTTP"
+  backends {
+    description = "Serverless Backend"
+    group = google_compute_region_network_endpoint_group.default.id
+  }
+}
+
+#Forwarding rule
+resource "google_compute_global_forwarding_rule" "default" {
+  name = "global-http-forwarding-rule"
+  project = "avian-amulet-378416"
+  ip_address = google_compute_global_address.default.id
   port_range = "80"
-  target    = "${google_compute_target_http_proxy.global_http_proxy.self_link}"
-  project = "avian-amulet-378416"
 }
-
-resource "google_compute_target_http_proxy" "global_http_proxy" {
-  name    = "global-http-proxy"
-  project = "avian-amulet-378416"
-  url_map = "${google_compute_url_map.global_http_url_map.self_link}"
-}
-
-resource "google_compute_url_map" "global_http_url_map" {
-  name            = "global-http-url-map"
-  default_service = "${google_compute_backend_service.serverless_backend_service.self_link}"
-  project = "avian-amulet-378416"
-}
-*/
