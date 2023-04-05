@@ -46,7 +46,7 @@ resource "google_compute_region_network_endpoint_group" "function_neg" {
   name  = "function-neg"
   network_endpoint_type = "SERVERLESS"
   region = "northamerica-northeast1"
-    cloud_function {
+  cloud_function {
     #created manually via UI
     function = "function_v1_mtl"
   }
@@ -54,9 +54,9 @@ resource "google_compute_region_network_endpoint_group" "function_neg" {
 
 
 #Reserved IP Address
-resource "google_compute_global_address" "default" {
-  name = "global-appserver-ip"
-}
+#resource "google_compute_global_address" "default" {
+#  name = "global-appserver-ip"
+#}
 
 #Create backend service
 resource "google_compute_backend_service" "default" {
