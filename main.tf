@@ -75,7 +75,7 @@ resource "google_compute_global_forwarding_rule" "default" {
   name = "global-http-forwarding-rule"
   project = "avian-amulet-378416"
   target     = google_compute_target_http_proxy.default.id
-  ip_address = google_compute_global_address.default.id
+  ip_address = "global-appserver-ip"
   port_range = "80"
 }
 
