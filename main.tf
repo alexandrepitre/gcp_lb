@@ -27,7 +27,7 @@ module "lb-http-serverless" {
       groups = [
         {
           # Your serverless service should have a NEG created that's referenced here.
-          group = google_compute_region_network_endpoint_group.default.id
+          group = google_compute_region_network_endpoint_group.function_neg.id
         }
       ]
 
@@ -47,7 +47,7 @@ resource "google_compute_region_network_endpoint_group" "function_neg" {
   network_endpoint_type = "SERVERLESS"
   region                = "northamerica-northeast1"
     cloud_function {
-    function = google_cloudfunctions_function.function_neg.name
+    function = google_cloudfunctions_function.function_neg.id
   }
 }
 
@@ -69,7 +69,7 @@ resource "google_compute_backend_service" "default" {
   protocol = "HTTP"
   backend {
     description = "Serverless Backend"
-    group = google_compute_region_network_endpoint_group.default.id
+    group = google_compute_region_network_endpoint_group.function_neg.name
   }
 }
 
