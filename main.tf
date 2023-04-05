@@ -47,15 +47,11 @@ resource "google_compute_region_network_endpoint_group" "function_neg" {
   network_endpoint_type = "SERVERLESS"
   region = "northamerica-northeast1"
     cloud_function {
-    function = google_cloudfunctions_function.function_neg.id
+    #created manually via UI
+    function = "function_v1_mtl"
   }
 }
 
-#Create Cloud Function
-resource "google_cloudfunctions_function" "function_neg" {
-  name        = "function_v1_mtl"
-  runtime = "go120"
-}
 
 #Reserved IP Address
 resource "google_compute_global_address" "default" {
