@@ -43,9 +43,9 @@ module "lb-http-serverless" {
 
 #Serverless Network Endpoint Group (NEG)
 resource "google_compute_region_network_endpoint_group" "function_neg" {
-  name                  = "function_neg"
+  name  = "function-neg"
   network_endpoint_type = "SERVERLESS"
-  region                = "northamerica-northeast1"
+  region = "northamerica-northeast1"
     cloud_function {
     function = google_cloudfunctions_function.function_neg.id
   }
@@ -78,6 +78,34 @@ resource "google_compute_backend_service" "default" {
 resource "google_compute_global_forwarding_rule" "default" {
   name = "global-http-forwarding-rule"
   project = "avian-amulet-378416"
+  target     = google_compute_target_http_proxy.default.id
   ip_address = google_compute_global_address.default.id
   port_range = "80"
+}
+
+#Conifugre Target Proxy
+resource "google_compute_target_http_proxy" "default" {
+  name        = "target-proxy"
+  description = "a description"
+  url_map     = google_compute_url_map.default.id
+}
+
+resource "google_compute_url_map" "default" {
+  name            = "url-map-target-proxy"
+  default_service = google_compute_backend_service.default.id
+
+  host_rule {
+    hosts        = ["mysite.com"]
+    path_matcher = "allpaths"
+  }
+
+  path_matcher {
+    name            = "allpaths"
+    default_service = google_compute_backend_service.default.id
+
+    path_rule {
+      paths   = ["/*"]
+      service = google_compute_backend_service.default.id
+    }
+  }
 }
