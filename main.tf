@@ -25,13 +25,13 @@ resource "google_compute_backend_service" "default" {
   load_balancing_scheme = "EXTERNAL"
   protocol = "HTTP"
   timeout_sec = 10
-}
 # Specify the Cloud Function as the backend
   backend {
     group          = data.google_cloudfunctions_function.my_function.self_link
     balancing_mode = "RATE"
     max_rate_per_instance = 10
   }
+}
 
 # Create a health check to verify the Cloud Function is healthy
   health_checks {
@@ -70,8 +70,6 @@ resource "google_compute_target_http_proxy" "default" {
   description = "a description"
   url_map     = google_compute_url_map.default.id
 }
-
-
 
 #Forwarding rule
 resource "google_compute_global_forwarding_rule" "default" {
