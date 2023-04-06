@@ -1,46 +1,3 @@
-# Module definition
-module "lb-http-serverless" {
-  source = "GoogleCloudPlatform/lb-http/google//modules/serverless_negs"
-  version = "~> 4.4"
-
-  project = "avian-amulet-378416"
-  name = "http-load-balancer"
-
-  ssl                             = false
-  https_redirect                  = false
-  backends = {
-    default = {
-      description                     = null
-      protocol                        = "HTTP"
-      port_name                       = "HTTP"
-      enable_cdn                      = false
-      custom_request_headers          = null
-      custom_response_headers         = null
-      security_policy                 = null
-
-
-      log_config = {
-        enable = false
-        sample_rate = 1.0
-      }
-
-      groups = [
-        {
-          # Your serverless service should have a NEG created that's referenced here.
-          group = google_compute_region_network_endpoint_group.function_neg.id
-        }
-      ]
-
-      iap_config = {
-        enable               = false
-        oauth2_client_id     = null
-        oauth2_client_secret = null
-      }
-    }
-  }
-}
-
-
 #Serverless Network Endpoint Group (NEG)
 resource "google_compute_region_network_endpoint_group" "function_neg" {
   name  = "function-neg"
@@ -101,6 +58,48 @@ resource "google_compute_url_map" "default" {
     path_rule {
       paths   = ["/*"]
       service = google_compute_backend_service.default.id
+    }
+  }
+}
+
+# Module definition
+module "lb-http-serverless" {
+  source = "GoogleCloudPlatform/lb-http/google//modules/serverless_negs"
+  version = "~> 4.4"
+
+  project = "avian-amulet-378416"
+  name = "http-load-balancer"
+
+  ssl                             = false
+  https_redirect                  = false
+  backends = {
+    default = {
+      description                     = null
+      protocol                        = "HTTP"
+      port_name                       = "HTTP"
+      enable_cdn                      = false
+      custom_request_headers          = null
+      custom_response_headers         = null
+      security_policy                 = null
+
+
+      log_config = {
+        enable = false
+        sample_rate = 1.0
+      }
+
+      groups = [
+        {
+          # Your serverless service should have a NEG created that's referenced here.
+          group = google_compute_region_network_endpoint_group.function_neg.id
+        }
+      ]
+
+      iap_config = {
+        enable               = false
+        oauth2_client_id     = null
+        oauth2_client_secret = null
+      }
     }
   }
 }
