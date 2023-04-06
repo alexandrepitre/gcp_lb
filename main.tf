@@ -60,7 +60,6 @@ resource "google_compute_region_network_endpoint_group" "function_neg" {
 
 #Create backend service
 resource "google_compute_backend_service" "default" {
-  provider = google-beta
   name = "serverless-backend-service" 
   project = "avian-amulet-378416"
   protocol = "HTTP"
