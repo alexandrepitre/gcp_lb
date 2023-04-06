@@ -1,3 +1,13 @@
+#Reserved IP Address
+#resource "google_compute_global_address" "default" {
+#  name = "global-appserver-ip"
+#}
+
+# Use an existing Google Cloud Function
+data "google_cloudfunctions_function" "my_function" {
+  name = "function_v1_mtl"
+}
+
 #Serverless Network Endpoint Group (NEG)
 resource "google_compute_region_network_endpoint_group" "function_neg" {
   name  = "function-neg"
@@ -9,39 +19,31 @@ resource "google_compute_region_network_endpoint_group" "function_neg" {
   }
 }
 
-
-#Reserved IP Address
-#resource "google_compute_global_address" "default" {
-#  name = "global-appserver-ip"
-#}
-
 #Create backend service
 resource "google_compute_backend_service" "default" {
   name = "serverless-backend-service" 
-  project = "avian-amulet-378416"
+  load_balancing_scheme = "EXTERNAL"
   protocol = "HTTP"
+  timeout_sec = 10
+}
+# Specify the Cloud Function as the backend
   backend {
-    description = "Serverless Backend"
-    group = google_compute_region_network_endpoint_group.function_neg.name
+    group          = data.google_cloudfunctions_function.my_function.self_link
+    balancing_mode = "RATE"
+    max_rate_per_instance = 10
   }
-}
 
-#Forwarding rule
-resource "google_compute_global_forwarding_rule" "default" {
-  name = "global-http-forwarding-rule"
-  project = "avian-amulet-378416"
-  target     = google_compute_target_http_proxy.default.id
-  ip_address = "global-appserver-ip"
-  port_range = "80"
-}
+# Create a health check to verify the Cloud Function is healthy
+  health_checks {
+    check_interval_sec = 10
+    timeout_sec       = 5
+    http_health_check {
+      port = 80
+      request_path = "/"
+    }
+  }
 
-#Conifugre Target Proxy
-resource "google_compute_target_http_proxy" "default" {
-  name        = "target-proxy"
-  description = "a description"
-  url_map     = google_compute_url_map.default.id
-}
-
+# Create a URL map to route requests to the backend service
 resource "google_compute_url_map" "default" {
   name            = "url-map-target-proxy"
   default_service = google_compute_backend_service.default.id
@@ -61,6 +63,26 @@ resource "google_compute_url_map" "default" {
     }
   }
 }
+
+#Conifugre Target Proxy
+resource "google_compute_target_http_proxy" "default" {
+  name        = "target-proxy"
+  description = "a description"
+  url_map     = google_compute_url_map.default.id
+}
+
+
+
+#Forwarding rule
+resource "google_compute_global_forwarding_rule" "default" {
+  name = "global-http-forwarding-rule"
+  project = "avian-amulet-378416"
+  target     = google_compute_target_http_proxy.default.id
+  ip_address = "global-appserver-ip"
+  port_range = "80"
+  load_balancing_scheme = "EXTERNAL"
+}
+
 
 # Module definition
 module "lb-http-serverless" {
