@@ -27,7 +27,7 @@ resource "google_compute_backend_service" "default" {
   timeout_sec = 10
 # Specify the Cloud Function as the backend
   backend {
-    group          = data.google_cloudfunctions_function.my_function.self_link
+    group          = data.google_cloudfunctions_function.my_function.name
     balancing_mode = "RATE"
     max_rate_per_instance = 10
   }
