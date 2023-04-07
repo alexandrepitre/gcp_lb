@@ -31,9 +31,7 @@ resource "google_compute_backend_service" "default" {
     balancing_mode = "RATE"
     max_rate_per_instance = 10
   }
-}
-
-# Create a health check to verify the Cloud Function is healthy
+  # Create a health check to verify the Cloud Function is healthy
   health_checks {
     check_interval_sec = 10
     timeout_sec       = 5
@@ -42,6 +40,8 @@ resource "google_compute_backend_service" "default" {
       request_path = "/"
     }
   }
+}
+
 
 # Create a URL map to route requests to the backend service
 resource "google_compute_url_map" "default" {
