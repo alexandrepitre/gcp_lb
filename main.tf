@@ -31,7 +31,7 @@ resource "google_compute_backend_service" "default" {
     balancing_mode = "RATE"
     max_rate_per_instance = 10
   }
-
+}
 # Create a URL map to route requests to the backend service
 resource "google_compute_url_map" "default" {
   name            = "url-map-target-proxy"
