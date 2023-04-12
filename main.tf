@@ -27,19 +27,19 @@ resource "google_compute_backend_service" "default" {
   timeout_sec = 10
 # Specify the Cloud Function as the backend
   backend {
-    group          = data.google_cloudfunctions_function.my_function.name
+    group  = data.google_cloudfunctions_function.my_function.name
     balancing_mode = "RATE"
     max_rate_per_instance = 10
   }
   # Create a health check to verify the Cloud Function is healthy
-  health_checks {
-    check_interval_sec = 10
-    timeout_sec       = 5
-    http_health_check {
-      port = 80
-      request_path = "/"
-    }
-  }
+#  health_checks {
+#    check_interval_sec = 10
+#    timeout_sec       = 5
+#    http_health_check {
+#      port = 80
+#      request_path = "/"
+#    }
+#  }
 }
 
 
