@@ -4,9 +4,9 @@
 #}
 
 # Use an existing Google Cloud Function
-data "google_cloudfunctions_function" "my_function" {
-  name = "function_v1_mtl"
-}
+#data "google_cloudfunctions_function" "my_function" {
+#  name = "function_v1_mtl"
+#}
 
 #Serverless Network Endpoint Group (NEG)
 resource "google_compute_region_network_endpoint_group" "function_neg" {
@@ -27,9 +27,10 @@ resource "google_compute_backend_service" "default" {
   #timeout_sec = 10
 # Specify the Cloud Function as the backend
   backend {
-    group  = data.google_cloudfunctions_function.my_function.name
-    balancing_mode = "RATE"
-    max_rate_per_instance = 10
+    function_name = "function_v1_mtl"
+    #group  = data.google_cloudfunctions_function.my_function.name
+    #balancing_mode = "RATE"
+    #max_rate_per_instance = 10
   }
 }
 # Create a URL map to route requests to the backend service
