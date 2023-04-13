@@ -15,7 +15,7 @@ resource "google_compute_region_network_endpoint_group" "function_neg" {
   region = "northamerica-northeast1"
   cloud_function {
     #created manually via UI
-    function = google_cloudfunctions_function.my_function.name
+    function = data.google_cloudfunctions_function.my_function.name
   }
 }
 
