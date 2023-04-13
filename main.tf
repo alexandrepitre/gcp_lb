@@ -22,12 +22,12 @@ resource "google_compute_region_network_endpoint_group" "function_neg" {
 #Create backend service
 resource "google_compute_backend_service" "default" {
   name = "serverless-backend-service" 
-  load_balancing_scheme = "EXTERNAL_MANAGED"
-  protocol = "HTTP"
-  timeout_sec = 10
+  #load_balancing_scheme = "EXTERNAL_MANAGED"
+  #protocol = "HTTP"
+  #timeout_sec = 10
 # Specify the Cloud Function as the backend
   backend {
-    group  = data.google_cloudfunctions_function.my_function.https_trigger_url
+    group  = data.google_cloudfunctions_function.my_function.name
     balancing_mode = "RATE"
     max_rate_per_instance = 10
   }
