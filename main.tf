@@ -20,19 +20,20 @@ resource "google_compute_region_network_endpoint_group" "function_neg" {
 }
 
 #Create backend service
-resource "google_compute_backend_service" "default" {
-  name = "serverless-backend-service" 
+#resource "google_compute_backend_service" "default" {
+#  name = "serverless-backend-service" 
   #load_balancing_scheme = "EXTERNAL_MANAGED"
   #protocol = "HTTP"
   #timeout_sec = 10
 # Specify the Cloud Function as the backend
-  backend {
-    group  = data.google_cloudfunctions_function.my_function.name
+#  backend {
+#    group  = data.google_cloudfunctions_function.my_function.name
     #balancing_mode = "RATE"
     #max_rate_per_instance = 10
-  }
-}
-# Create a URL map to route requests to the backend service
+#  }
+#}
+
+/* # Create a URL map to route requests to the backend service
 resource "google_compute_url_map" "default" {
   name            = "url-map-target-proxy"
   default_service = google_compute_backend_service.default.id
@@ -51,16 +52,16 @@ resource "google_compute_url_map" "default" {
       service = google_compute_backend_service.default.id
     }
   }
-}
+} */
 
-#Conifugre Target Proxy
+/* #Conifugre Target Proxy
 resource "google_compute_target_http_proxy" "default" {
   name        = "target-proxy"
   description = "a description"
   url_map     = google_compute_url_map.default.id
-}
+} */
 
-#Forwarding rule
+/* #Forwarding rule
 resource "google_compute_global_forwarding_rule" "default" {
   name = "global-http-forwarding-rule"
   project = "avian-amulet-378416"
@@ -68,7 +69,7 @@ resource "google_compute_global_forwarding_rule" "default" {
   ip_address = "global-appserver-ip"
   port_range = "80"
   load_balancing_scheme = "EXTERNAL"
-}
+} */
 
 
 # Module definition
@@ -77,7 +78,10 @@ module "lb-http-serverless" {
   version = "~> 4.4"
 
   project = "avian-amulet-378416"
-  name = "http-load-balancer"
+  name = "alex-load-balancer"
+  create_address = true
+  create_url_map = true
+  load_balancing_scheme = "EXTERNAL_MANAGED"
 
   ssl                             = false
   https_redirect                  = false
@@ -93,7 +97,7 @@ module "lb-http-serverless" {
 
 
       log_config = {
-        enable = true
+        enable = false
         sample_rate = 1.0
       }
 
