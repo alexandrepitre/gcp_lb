@@ -4,9 +4,9 @@
 #}
 
 # Use an existing Google Cloud Function
-data "google_cloudfunctions_function" "my_function" {
-  name = "function_v1_mtl"
-}
+#data "google_cloudfunctions_function" "my_function" {
+#  name = "function_v1_mtl"
+#}
 
 #Serverless Network Endpoint Group (NEG)
 resource "google_compute_region_network_endpoint_group" "function_neg" {
@@ -15,7 +15,7 @@ resource "google_compute_region_network_endpoint_group" "function_neg" {
   region = "northamerica-northeast1"
   cloud_function {
     #created manually via UI
-    function = data.google_cloudfunctions_function.my_function.id
+    function = "function_v1_mtl"
   }
 }
 
