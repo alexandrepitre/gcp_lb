@@ -81,7 +81,6 @@ module "lb-http-serverless" {
   name = "alex-load-balancer"
   create_address = true
   create_url_map = true
-  load_balancing_scheme = "EXTERNAL_MANAGED"
 
   ssl                             = false
   https_redirect                  = false
