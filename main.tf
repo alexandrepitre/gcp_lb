@@ -27,7 +27,7 @@ module "lb-http-serverless" {
     default = {
       description                     = null
       protocol                        = "HTTP"
-      port_name                       = var.service_port_name
+      port_name                       = "HTTP"
       enable_cdn                      = false
       custom_request_headers          = null
       custom_response_headers         = null
