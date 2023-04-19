@@ -25,20 +25,9 @@ module "lb-http-serverless" {
 
   backends = {
     default = {
-      description                     = null
       protocol                        = "HTTPS"
       port_name                       = "HTTPS"
       enable_cdn                      = false
-      custom_request_headers          = null
-      custom_response_headers         = null
-      security_policy                 = null
-      compression_mode                = null
-
-
-      log_config = {
-        enable = true
-        sample_rate = 1.0
-      }
 
       groups = [
         {
@@ -46,12 +35,6 @@ module "lb-http-serverless" {
           group = google_compute_region_network_endpoint_group.function_neg.id
         }
       ]
-
-      iap_config = {
-        enable               = false
-        oauth2_client_id     = null
-        oauth2_client_secret = null
-      }
     }
   }
 }
