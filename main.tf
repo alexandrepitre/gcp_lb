@@ -27,7 +27,7 @@ module "lb-http-serverless" {
   create_url_map = true
 
   ssl                             = true
-  managed_ssl_certificate_domains = ["cn.com"]
+  managed_ssl_certificate_domains = ["var.domain_name"]
   https_redirect                  = true
   load_balancing_scheme = "EXTERNAL_MANAGED"
 
