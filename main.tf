@@ -1,14 +1,3 @@
-#Serverless Network Endpoint Group (NEG)
-#resource "google_compute_region_network_endpoint_group" "function_neg" {
-#  name  = "function-neg"
-#  network_endpoint_type = "SERVERLESS"
-#  region = "northamerica-northeast1"
-#  cloud_function {
-#    #created manually via UI
-#    function = "function_v1_mtl"
-#  }
-#}
-
 #Create Serverless Network Endpoint Group (NEG)
 module "neg_northamerica_northeast1" {
   source = "./modules/neg"
