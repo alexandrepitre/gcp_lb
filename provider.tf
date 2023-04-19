@@ -1,4 +1,4 @@
 provider "google" {
-  project = "avian-amulet-378416"
+  project = var.project
   region  = "northamerica-northeast1"
 }
