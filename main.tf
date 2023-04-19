@@ -68,7 +68,7 @@ module "lb-http-serverless" {
 
         {
           #Attach NEG2 to backend
-          group = module.neg_us_central1.neg2_id
+          group = module.neg_us_central1.neg_id
         }
       ]
 
