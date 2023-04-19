@@ -11,10 +11,9 @@ resource "google_compute_region_network_endpoint_group" "function_neg" {
 
 # Module definition
 module "lb-http-serverless" {
-  source = "GoogleCloudPlatform/lb-http/google//modules/serverless_negs"
-  version = "~> 4.4"
+  source = "./modules/serverless_negs"
 
-  project = "avian-amulet-378416"
+  project = var.project
   name = "alex-load-balancer"
   create_address = true
   create_url_map = true
