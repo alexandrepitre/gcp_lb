@@ -1,15 +1,40 @@
 #Serverless Network Endpoint Group (NEG)
-resource "google_compute_region_network_endpoint_group" "function_neg" {
-  name  = "function-neg"
-  network_endpoint_type = "SERVERLESS"
-  region = "northamerica-northeast1"
-  cloud_function {
-    #created manually via UI
-    function = "function_v1_mtl"
+#resource "google_compute_region_network_endpoint_group" "function_neg" {
+#  name  = "function-neg"
+#  network_endpoint_type = "SERVERLESS"
+#  region = "northamerica-northeast1"
+#  cloud_function {
+#    #created manually via UI
+#    function = "function_v1_mtl"
+#  }
+#}
+
+#Create Serverless Network Endpoint Group (NEG)
+module "neg_northamerica_northeast1" {
+  source = "./modules/neg"
+  providers = {
+    google = google.target
   }
+  prefix        = var.prefix
+  region        = "northamerica-northeast1"
+  function_name = "function_v1_mtl"
+
 }
 
-# Module definition
+module "neg_us_central1" {
+  source = "./modules/neg"
+  providers = {
+    google = google.target
+  }
+  prefix        = var.prefix
+  region        = "us-central1"
+  function_name = "function_v1_mtl"
+}
+
+
+#Create Global Load Balancer for Serverless NEGs
+#https://github.com/terraform-google-modules/terraform-google-lb-http/tree/master/modules/serverless_negs
+
 module "lb-http-serverless" {
   source = "./modules/serverless_negs"
 
@@ -43,8 +68,13 @@ module "lb-http-serverless" {
 
       groups = [
         {
-          # Your serverless service should have a NEG created that's referenced here.
-          group = google_compute_region_network_endpoint_group.function_neg.id
+          #Attach NEG1 to backend
+          group = module.neg_northamerica_northeast1.neg_id
+        },
+
+        {
+          #Attach NEG2 to backend
+          group = module.neg_us_central1.neg2_id
         }
       ]
 
