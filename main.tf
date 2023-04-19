@@ -27,7 +27,7 @@ module "lb-http-serverless" {
     default = {
       description                     = null
       protocol                        = "HTTP"
-      port_name                       = "HTTP"
+      port_name                       = "http"
       edge_security_policy            = null
       security_policy                 = null
       enable_cdn                      = false
