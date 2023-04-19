@@ -12,9 +12,6 @@
 #Create Serverless Network Endpoint Group (NEG)
 module "neg_northamerica_northeast1" {
   source = "./modules/neg"
-  providers = {
-    google = google.target
-  }
   prefix        = var.prefix
   region        = "northamerica-northeast1"
   function_name = "function_v1_mtl"
@@ -23,9 +20,6 @@ module "neg_northamerica_northeast1" {
 
 module "neg_us_central1" {
   source = "./modules/neg"
-  providers = {
-    google = google.target
-  }
   prefix        = var.prefix
   region        = "us-central1"
   function_name = "function_v1_mtl"
