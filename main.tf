@@ -26,7 +26,7 @@ module "lb-http-serverless" {
   backends = {
     default = {
       description                     = null
-      protocol                        = "HTTP"
+      protocol                        = "HTTPS"
       port_name                       = "http"
       edge_security_policy            = null
       security_policy                 = null
