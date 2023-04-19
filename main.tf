@@ -50,6 +50,7 @@ module "lb-http-serverless" {
         enable               = false
         oauth2_client_id     = null
         oauth2_client_secret = null
+      }
     }
   }
 }
