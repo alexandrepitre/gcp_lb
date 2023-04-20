@@ -8,7 +8,8 @@ variable "prefix" {
 }
 
 variable "domain_name" {
-  default = "alex.cn.com"
+  type = list
+  default = ["alex.cn.com"]
 }
 
 variable "zone_name" {
