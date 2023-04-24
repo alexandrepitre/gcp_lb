@@ -3,7 +3,7 @@ module "neg_northamerica_northeast1" {
   source = "./modules/neg"
   prefix        = var.prefix
   region        = "northamerica-northeast1"
-  function_name = "function_v1_mtl"
+  function_name = var.function_name
 
 }
 
@@ -11,7 +11,7 @@ module "neg_us_central1" {
   source = "./modules/neg"
   prefix        = var.prefix
   region        = "us-central1"
-  function_name = "function_v1_mtl"
+  function_name = var.function_name
 }
 
 

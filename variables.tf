@@ -15,3 +15,7 @@ variable "domain_name" {
 variable "zone_name" {
   default = "cn-com"
 }
+
+variable "function_name" {
+  default = "function_v1_mtl"
+}
