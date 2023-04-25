@@ -1,16 +1,14 @@
 variable "project" {
   type = string
-  default = "avian-amulet-378416"
 }
 
 variable "prefix" {
-  default = "alex"
+  type = string
 }
 
 variable "domain_name" {
   description = "Domain name to run the load balancer on. Used if `ssl` is `true`."
   type = list
-  default = ["alex.cn.com"]
 }
 
 variable "zone_name" {
@@ -18,18 +16,17 @@ variable "zone_name" {
 }
 
 variable "function_name" {
-  default = "function_v1_mtl"
+  type = string
 }
 
 variable "ssl" {
   description = "Run load balancer on HTTPS and provision managed certificate with provided `domain`."
-  type        = bool
-  default     = true
+  type = bool
 }
 
 variable "lb_name" {
   description = "Name for load balancer and associated resources"
-  default     = "alex-load-balancer"
+  type = string
 }
 
 variable "region_neg1" {
