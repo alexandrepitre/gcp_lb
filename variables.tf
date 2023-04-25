@@ -31,3 +31,13 @@ variable "lb_name" {
   description = "Name for load balancer and associated resources"
   default     = "alex-load-balancer"
 }
+
+variable "region_neg1" {
+  description = "Region of the first network endpoint group"
+  default     = "northamerica-northeast1"
+}
+
+variable "region_neg2" {
+  description = "Region of the second network endpoint group"
+  default     = "us-central1"
+}
