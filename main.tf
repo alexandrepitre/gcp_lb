@@ -15,6 +15,42 @@ module "neg_us_central1" {
 }
 
 
+ // Use the serverless_negs module to configure URL map with host/path rules
+  serverless_negs = [
+    {
+      name       = "example-serverless-neg"
+      backend_service = module.backend_service.self_link
+      path_rules = [
+        {
+          paths = ["/api/*"]
+          service = module.api_backend_service.self_link
+        },
+        {
+          paths = ["/app/*"]
+          service = module.app_backend_service.self_link
+        }
+      ]
+      host_rules = [
+        {
+          hosts = var.domain_name
+          path_matcher = "example-host-path-matcher"
+        }
+      ]
+    }
+  ]
+
+  // Define a path matcher to use in the URL map
+resource "google_compute_path_matcher" "example_host_path_matcher" {
+  name  = "example-host-path-matcher"
+  default_service = module.backend_service.self_link
+
+  path_rule {
+    paths = ["/"]
+    service = module.backend_service.self_link
+  }
+}
+
+
 #Create Global Load Balancer for Serverless NEGs
 #https://github.com/terraform-google-modules/terraform-google-lb-http/tree/master/modules/serverless_negs
 
