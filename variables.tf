@@ -8,7 +8,7 @@ variable "prefix" {
 
 variable "domain_name" {
   description = "Domain name to run the load balancer on. Used if `ssl` is `true`."
-  type = list
+  type = list(string)
 }
 
 variable "zone_name" {
@@ -29,12 +29,6 @@ variable "lb_name" {
   type = string
 }
 
-variable "region_neg1" {
-  description = "Region of the first network endpoint group"
-  default     = "northamerica-northeast1"
-}
-
-variable "region_neg2" {
-  description = "Region of the second network endpoint group"
-  default     = "us-central1"
+variable "region" {
+type = list(string)  
 }

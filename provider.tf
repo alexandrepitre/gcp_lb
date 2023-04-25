@@ -1,4 +1,4 @@
 provider "google" {
   project = var.project
-  region  = "northamerica-northeast1"
+  region  = "${var.region[0]}"
 }
