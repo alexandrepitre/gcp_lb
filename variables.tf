@@ -8,6 +8,7 @@ variable "prefix" {
 }
 
 variable "domain_name" {
+  description = "Domain name to run the load balancer on. Used if `ssl` is `true`."
   type = list
   default = ["alex.cn.com"]
 }
@@ -18,4 +19,15 @@ variable "zone_name" {
 
 variable "function_name" {
   default = "function_v1_mtl"
+}
+
+variable "ssl" {
+  description = "Run load balancer on HTTPS and provision managed certificate with provided `domain`."
+  type        = bool
+  default     = true
+}
+
+variable "lb_name" {
+  description = "Name for load balancer and associated resources"
+  default     = "alex-load-balancer"
 }

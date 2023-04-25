@@ -22,13 +22,13 @@ module "lb-http-serverless" {
   source = "./modules/serverless_negs"
 
   project = var.project
-  name = "alex-load-balancer"
+  name = var.lb_name
   create_address = true
   create_url_map = true
 
-  ssl                             = true
+  ssl                             = var.ssl
   managed_ssl_certificate_domains = var.domain_name
-  https_redirect                  = true
+  https_redirect                  = var.ssl
   load_balancing_scheme = "EXTERNAL_MANAGED"
 
   backends = {
