@@ -2,7 +2,7 @@
 module "neg_northamerica_northeast1" {
   source = "./modules/neg"
   prefix        = var.prefix
-  region        = var.region_neg1
+  region        = "${var.region[0]}"
   function_name = var.function_name
 
 }
@@ -10,7 +10,7 @@ module "neg_northamerica_northeast1" {
 module "neg_us_central1" {
   source = "./modules/neg"
   prefix        = var.prefix
-  region        = var.region_neg2
+  region        = "${var.region[1]}"
   function_name = var.function_name
 }
 
