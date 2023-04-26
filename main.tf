@@ -66,4 +66,13 @@ module "lb-http-serverless" {
       }
     }
   }
+
+  #Add host path routing rule
+  route_rules = [
+    {
+      host_pattern    = "cn.com"
+      path_matcher    = "api"
+      backend_service = "default"
+    }
+  ]
 }
