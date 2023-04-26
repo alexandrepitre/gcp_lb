@@ -14,6 +14,33 @@ module "neg_us_central1" {
   function_name = var.function_name
 }
 
+#Create url map 
+resource "google_compute_url_map" "urlmap" {
+  name        = "urlmap"
+  description = "a description"
+  default_service = module.lb-http-serverless.backend_services["default"].self_link
+
+  host_rule {
+    hosts        = ["test.cn.com"]
+    path_matcher = "allpaths"
+  }
+
+  path_matcher {
+    name            = "allpaths"
+    default_service = module.lb-http-serverless.backend_services["default"].self_link
+
+    path_rule {
+      paths = ["/order"]
+      service = module.lb-http-serverless.backend_services["default"].self_link
+    }
+
+    path_rule {
+      paths = ["/user"]
+      service = module.lb-http-serverless.backend_services["default"].self_link
+    }
+  }
+}
+
 #Create Global Load Balancer for Serverless NEGs
 #https://github.com/terraform-google-modules/terraform-google-lb-http/tree/master/modules/serverless_negs
 module "lb-http-serverless" {
@@ -22,12 +49,13 @@ module "lb-http-serverless" {
   project = var.project
   name = var.lb_name
   create_address = true
-  create_url_map = true
+  #create_url_map = yes
 
   ssl                             = var.ssl
   managed_ssl_certificate_domains = var.domain_name
   https_redirect                  = var.ssl
   load_balancing_scheme = "EXTERNAL_MANAGED"
+  url_map = google_compute_url_map.urlmap.self_link
 
   backends = {
     default = {
@@ -64,33 +92,5 @@ module "lb-http-serverless" {
         oauth2_client_secret = null
       }
     }
-  }
-}
-
-#Create url map 
-resource "google_compute_url_map" "urlmap" {
-  name        = "urlmap"
-  description = "a description"
-  default_service = module.lb-http-serverless.backend_services["default"].self_link
-
-  host_rule {
-    hosts        = ["test.cn.com"]
-    path_matcher = "allpaths"
-  }
-
-  path_matcher {
-    name            = "allpaths"
-    default_service = module.lb-http-serverless.backend_services["default"].self_link
-
-    path_rule {
-      paths = ["/order"]
-      service = module.lb-http-serverless.backend_services["default"].self_link
-    }
-
-    path_rule {
-      paths = ["/user"]
-      service = module.lb-http-serverless.backend_services["default"].self_link
-    }
-    
   }
 }
