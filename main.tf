@@ -17,7 +17,7 @@ module "neg_us_central1" {
 
 #Create url map 
 resource "google_compute_url_map" "urlmap" {
-  name = module.lb-http-serverless.url_map.name
+  name = "urlmap"
   default_service = module.lb-http-serverless.backend_services["default"].self_link
 
   host_rule {
