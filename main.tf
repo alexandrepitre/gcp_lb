@@ -74,7 +74,7 @@ resource "google_compute_url_map" "urlmap" {
   default_service = module.lb-http-serverless.backend_services["default"].self_link
 
   host_rule {
-    hosts        = ["*"]
+    hosts        = ["test.cn.com"]
     path_matcher = "allpaths"
   }
 
@@ -84,7 +84,8 @@ resource "google_compute_url_map" "urlmap" {
 
     path_rule {
       paths = [
-        "/api",
+        "/user",
+        "/order"
       ]
       service = module.lb-http-serverless.backend_services["default"].self_link
     }
