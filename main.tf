@@ -83,11 +83,14 @@ resource "google_compute_url_map" "urlmap" {
     default_service = module.lb-http-serverless.backend_services["default"].self_link
 
     path_rule {
-      paths = [
-        "/user",
-        "/order"
-      ]
+      paths = ["/order"]
       service = module.lb-http-serverless.backend_services["default"].self_link
     }
+
+    path_rule {
+      paths = ["/user"]
+      service = module.lb-http-serverless.backend_services["default"].self_link
+    }
+    
   }
 }
