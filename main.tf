@@ -16,7 +16,6 @@ module "neg_us_central1" {
 
 #Create Global Load Balancer for Serverless NEGs
 #https://github.com/terraform-google-modules/terraform-google-lb-http/tree/master/modules/serverless_negs
-
 module "lb-http-serverless" {
   source = "./modules/serverless_negs"
 
@@ -66,13 +65,28 @@ module "lb-http-serverless" {
       }
     }
   }
+}
 
-  #Add host path routing rule
-  route_rules = [
-    {
-      host_pattern    = "cn.com"
-      path_matcher    = "api"
-      backend_service = "default"
+#Create url map 
+ressource "google_compute_url_map" "urlmap" {
+  name        = "urlmap"
+  description = "a description"
+  default_service = module.lb-http-serverless.backend_services["default"].self_link
+
+  host_rule {
+    hosts        = ["*"]
+    path_matcher = "allpaths"
+  }
+
+  path_matcher {
+    name            = "allpaths"
+    default_service = module.lb-http-serverless.backend_services["default"].self_link
+
+    path_rule {
+      paths = [
+        "/api",
+      ]
+      service = module.lb-http-serverless.backend_services["default"].self_link
     }
-  ]
+  }
 }
