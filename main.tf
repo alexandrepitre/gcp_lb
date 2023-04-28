@@ -46,7 +46,7 @@ resource "google_compute_url_map" "urlmap" {
 module "lb-http-serverless" {
   source = "./modules/serverless_negs"
 
-  project = var.project
+  project = var.project_id
   name = var.lb_name
   create_address = true
   #create_url_map = yes
