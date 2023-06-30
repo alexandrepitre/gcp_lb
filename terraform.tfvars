@@ -1,4 +1,4 @@
-project_id = "avian-amulet-378416"
+project_id = "ardent-time-387618"
 prefix = "alex"
 function_name = "function_v1_mtl"
 ssl = true

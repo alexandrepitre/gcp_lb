@@ -30,6 +30,5 @@ variable "lb_name" {
 }
 
 variable "region" {
-type = list(string)
-#  
+type = list(string) 
 }
