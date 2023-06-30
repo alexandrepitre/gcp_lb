@@ -64,6 +64,7 @@ module "lb-http-serverless" {
       description                     = null
       enable_cdn                      = false
       security_policy                 = null
+      #security_policy                 = google_compute_security_policy.projectsecpolicy.id
       compression_mode                = null
       edge_security_policy            = null
       custom_request_headers          = null
