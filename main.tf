@@ -14,7 +14,6 @@ module "neg_us_central1" {
   function_name = var.function_name
 }
 
-
 /* #Create url map 
 resource "google_compute_url_map" "urlmap" {
   name = "urlmap"
@@ -45,6 +44,7 @@ resource "google_compute_url_map" "urlmap" {
 #https://github.com/terraform-google-modules/terraform-google-lb-http/tree/master/modules/serverless_negs
 module "lb-http-serverless" {
   source = "./modules/serverless_negs"
+  version = "9.1.0"
 
   project = var.project_id
   name = var.lb_name
@@ -56,26 +56,6 @@ module "lb-http-serverless" {
   https_redirect                  = var.ssl
   load_balancing_scheme = "EXTERNAL_MANAGED"
   #url_map = google_compute_url_map.urlmap.self_link
-
-    backend_service    = {
-      "backend_fetchdata" = {
-        name        = "backend-fethdata"
-        backend     = {
-          group = module.neg_northamerica_northeast1.neg_id
-        }
-        path_prefixes = ["/fetchdata/*"]
-      }
-      "backend_service2" = {
-        name        = "backend-updatedata"
-        backend     = {
-          group = module.neg_us_central1.neg_id
-        }
-        path_prefixes = ["/updatadata/*"]
-      }
-    }
-  }
-
-  /*
   backends = {
     default = {
       protocol                        = "HTTPS"
@@ -114,4 +94,3 @@ module "lb-http-serverless" {
     }
   }
 }
-*/
