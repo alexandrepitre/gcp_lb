@@ -44,7 +44,6 @@ resource "google_compute_url_map" "urlmap" {
 #https://github.com/terraform-google-modules/terraform-google-lb-http/tree/master/modules/serverless_negs
 module "lb-http-serverless" {
   source = "./modules/serverless_negs"
-  version = "9.1.0"
 
   project = var.project_id
   name = var.lb_name
