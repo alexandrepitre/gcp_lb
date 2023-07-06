@@ -57,20 +57,21 @@ module "lb-http-serverless" {
   load_balancing_scheme = "EXTERNAL_MANAGED"
   #url_map = google_compute_url_map.urlmap.self_link
 
-  backend_service    = {
-    "backend_fetchdata" = {
-      name        = "backend-fethdata"
-      backend     = {
-        group = module.neg_northamerica_northeast1.neg_id
+    backend_service    = {
+      "backend_fetchdata" = {
+        name        = "backend-fethdata"
+        backend     = {
+          group = module.neg_northamerica_northeast1.neg_id
+        }
+        path_prefixes = ["/fetchdata/*"]
       }
-      path_prefixes = ["/fetchdata/*"]
-    }
-    "backend_service2" = {
-      name        = "backend-updatedata"
-      backend     = {
-        group = module.neg_us_central1.neg_id
+      "backend_service2" = {
+        name        = "backend-updatedata"
+        backend     = {
+          group = module.neg_us_central1.neg_id
+        }
+        path_prefixes = ["/updatadata/*"]
       }
-      path_prefixes = ["/updatadata/*"]
     }
   }
 
